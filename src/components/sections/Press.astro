@@ -1,0 +1,190 @@
+---
+const articles = [
+  {
+    outlet: 'IGN Pakistan',
+    outletShort: 'IGN',
+    title: 'Arcadium: A Haven for Gamers in Pakistan',
+    description: 'Unveiling the mystery of Arcadium: IGN explores Karachi\'s most ambitious gaming cafe.',
+    url: 'https://pk.ign.com/arcadium/227932/news/arcadium-a-haven-for-gamers-in-pakistan-or-unveiling-the-mystery-of-arcadium',
+    year: '2024',
+  },
+  {
+    outlet: 'IGN Pakistan',
+    outletShort: 'IGN',
+    title: 'Raptr Blitz Ignites the Arcadium with Tekken Tournament',
+    description: 'IGN covers the Raptr Blitz tournament hosted at Arcadium, Karachi\'s premier gaming venue.',
+    url: 'https://pk.ign.com/ps5/228445/news/raptr-blitz-ignites-the-arcadium-with-tekken-tournament',
+    year: '2024',
+  },
+  {
+    outlet: 'ProPakistani',
+    outletShort: 'Pro\u200bPakistani',
+    title: 'Arcadium Featured on ProPakistani',
+    description: 'ProPakistani, Pakistan\'s leading tech publication, features Arcadium as a landmark gaming destination in Karachi.',
+    url: 'https://www.facebook.com/ProPakistani/posts/pfbid0ef4uJZXXrGjD1FxBZfUmkdeuFSc3ZwqdyRZboyg6W7WEGQT1ackePTszCVUfxSul',
+    year: '2024',
+  },
+];
+---
+
+<section id="press" class="section-pad" aria-label="Press coverage">
+  <div class="container">
+    <div class="press-header" data-reveal>
+      <p class="press-eyebrow">As Featured In</p>
+      <h2 class="section-heading">
+        Karachi's gaming scene<br /><span class="gradient-text">is talking</span>
+      </h2>
+    </div>
+
+    <div class="press-grid">
+      {articles.map((article) => (
+        <a
+          href={article.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="press-card glass-card"
+          data-reveal
+          aria-label={`Read: ${article.title} on ${article.outlet}`}
+        >
+          <div class="press-card-top">
+            <span class="press-outlet">{article.outletShort}</span>
+            <span class="press-year">{article.year}</span>
+          </div>
+          <h3 class="press-title">{article.title}</h3>
+          <p class="press-desc">{article.description}</p>
+          <div class="press-read">
+            Read article
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #press {
+    overflow: hidden;
+  }
+
+  .press-header {
+    max-width: 600px;
+    margin-bottom: 4rem;
+  }
+
+  .press-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-brand-light);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .press-eyebrow::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--color-brand-light);
+    opacity: 0.5;
+  }
+
+  .press-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .press-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .press-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .press-card {
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-decoration: none;
+    transition:
+      border-color 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s var(--ease-expo-out);
+  }
+
+  .press-card:hover {
+    border-color: rgba(101, 40, 247, 0.5);
+    box-shadow: 0 8px 40px rgba(101, 40, 247, 0.15);
+    transform: translateY(-4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .press-card:hover {
+      transform: none;
+    }
+  }
+
+  .press-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .press-outlet {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-light);
+  }
+
+  .press-year {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-dim);
+  }
+
+  .press-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  .press-desc {
+    font-size: 0.875rem;
+    color: rgba(242, 240, 254, 0.5);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .press-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-brand-light);
+    margin-top: 0.5rem;
+    transition: gap 0.2s;
+  }
+
+  .press-card:hover .press-read {
+    gap: 0.75rem;
+  }
+</style>

@@ -1,0 +1,157 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { SITE } from '../../data/site';
+
+const faqs = [
+  {
+    question: 'What is Arcadium?',
+    answer: "Arcadium by ViderGG is a premium gaming zone and gaming cafe in Karachi, Pakistan. It is Pakistan's first and only 360Hz BenQ gaming cafe, offering 7 private gaming rooms with high-end PCs (RTX 5060), PlayStation 5, and both Standard and Premium setups in Gulshan-e-Iqbal, Karachi.",
+  },
+  {
+    question: 'Where is Arcadium located in Karachi?',
+    answer: 'Arcadium gaming zone is located at Office #1, Mezzanine Floor, Farhan Tower, Gulshan-e-Iqbal Block 10-A, Karachi, Pakistan. Easy to find near the main Rashid Minhas Road area.',
+  },
+  {
+    question: 'What are Arcadium\'s opening hours?',
+    answer: 'Arcadium is open 24 hours a day, 7 days a week, including weekends and all public holidays. Walk-ins are always welcome.',
+  },
+  {
+    question: 'How much does it cost to play at Arcadium?',
+    answer: 'Standard rooms are Rs 300/hr walk-in (3-hour pack: Rs 800, 10-hour pack: Rs 1,850). Premium 360Hz BenQ rooms are Rs 420/hr walk-in (3-hour pack: Rs 1,000, 10-hour pack: Rs 2,550). PS5 gaming is Rs 400/hr for 1 controller, Rs 700/hr for 2 controllers, and Rs 1,000/hr for 4 controllers.',
+  },
+  {
+    question: 'What gaming platforms does Arcadium have?',
+    answer: 'Arcadium has Premium PC rooms with RTX 5060, Ryzen 5 9600X, and 360Hz BenQ Zowie displays; Standard PC rooms with RTX 4060, Ryzen 5 5600, and 180Hz displays; and PlayStation 5 consoles supporting up to 4 players simultaneously.',
+  },
+  {
+    question: 'Do I need to book in advance or can I walk in?',
+    answer: 'Walk-ins are welcome at any time. To guarantee your preferred room, especially on weekends, you can book in advance via WhatsApp at ' + SITE.phone + '. Booking takes under a minute.',
+  },
+  {
+    question: 'Is Arcadium owned by ViderGG or ViderMedia?',
+    answer: 'Arcadium is a gaming zone brand by ViderGG, which is part of ViderMedia. The full brand name is Arcadium by ViderGG.',
+  },
+];
+---
+
+<section id="faq" class="section-pad" aria-label="Frequently asked questions">
+  <div class="container">
+    <div class="faq-header" data-reveal>
+      <SectionLabel label="FAQ" />
+      <h2 class="section-heading">
+        Common<br /><span class="gradient-text">questions</span>
+      </h2>
+      <p class="faq-sub">Everything you need to know before you show up.</p>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((faq, i) => (
+        <details class="faq-item glass-card" data-reveal>
+          <summary class="faq-question">
+            <span>{faq.question}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #faq {
+    overflow: hidden;
+  }
+
+  .faq-header {
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  .faq-sub {
+    font-size: 1.0625rem;
+    color: var(--color-text-dim);
+    margin-top: 1rem;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 860px;
+  }
+
+  .faq-item {
+    padding: 0;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .faq-item[open] {
+    border-color: rgba(101, 40, 247, 0.45);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    user-select: none;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(101, 40, 247, 0.4);
+    position: relative;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: '';
+    position: absolute;
+    background: var(--color-brand-light);
+    border-radius: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s var(--ease-expo-out), opacity 0.2s;
+  }
+
+  .faq-icon::before { width: 8px; height: 1.5px; }
+  .faq-icon::after  { width: 1.5px; height: 8px; }
+
+  .faq-item[open] .faq-icon {
+    background: rgba(101, 40, 247, 0.15);
+    border-color: rgba(101, 40, 247, 0.6);
+  }
+
+  .faq-item[open] .faq-icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+    opacity: 0;
+  }
+
+  .faq-answer {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.9375rem;
+    color: rgba(242, 240, 254, 0.65);
+    line-height: 1.7;
+    border-top: 1px solid rgba(101, 40, 247, 0.12);
+    margin: 0;
+    padding-top: 1rem;
+  }
+</style>

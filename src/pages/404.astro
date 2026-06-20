@@ -1,0 +1,78 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { SITE } from '../data/site';
+---
+
+<MainLayout title="404 - Page Not Found" description="The page you're looking for doesn't exist.">
+  <section id="not-found" aria-label="Page not found">
+    <div class="container">
+      <p class="not-found-label">404</p>
+      <h1 class="not-found-heading">
+        Game<br /><span class="gradient-text">Over</span>
+      </h1>
+      <p class="not-found-sub">
+        This page doesn't exist. Respawn and head back to the main zone.
+      </p>
+      <div class="not-found-ctas">
+        <a href="/" class="btn-primary" data-cursor="magnetic">Back to Home</a>
+        <a
+          href={SITE.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost"
+          data-cursor="magnetic"
+        >
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  #not-found {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-block: var(--section-pad);
+  }
+
+  .not-found-label {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(6rem, 20vw, 14rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    background: linear-gradient(135deg, rgba(101,40,247,0.3) 0%, rgba(101,40,247,0.08) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: -0.15em;
+  }
+
+  .not-found-heading {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .not-found-sub {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: var(--color-text-dim);
+    max-width: 40ch;
+    margin: 0 auto 2.5rem;
+  }
+
+  .not-found-ctas {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>

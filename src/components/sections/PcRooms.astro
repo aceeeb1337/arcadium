@@ -1,0 +1,259 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { categories } from '../../data/pricing';
+import { SITE } from '../../data/site';
+
+const rooms = categories.filter((c) => c.id === 'standard-pc' || c.id === 'premium-pc');
+const whatsappBase = `https://wa.me/${SITE.whatsapp}?text=`;
+---
+
+<section id="rooms" class="section-pad" aria-label="PC rooms">
+  <div class="container">
+    <div class="rooms-header" data-reveal>
+      <SectionLabel label="The Rooms" />
+      <h2 class="section-heading">
+        Two tiers,<br /><span class="gradient-text">zero compromise</span>
+      </h2>
+      <p class="rooms-sub">
+        Every seat is a private room. Pick Standard for solid 180Hz play, or Premium for
+        Pakistan's first 360Hz BenQ setup with RTX 5060.
+      </p>
+    </div>
+
+    <div class="rooms-grid">
+      {rooms.map((room) => (
+        <div
+          class:list={['room-card glass-card', `cat-${room.accent}`, { 'room-featured': room.id === 'premium-pc' }]}
+          data-reveal
+        >
+          {room.id === 'premium-pc' && <div class="room-badge">Flagship</div>}
+
+          <div class="room-head">
+            <div>
+              <h3 class="room-name">{room.name}</h3>
+              <p class="room-tagline">{room.tagline}</p>
+            </div>
+            <span class="room-rate">{room.ratePerHour}</span>
+          </div>
+
+          <ul class="room-specs">
+            {room.features.map((f) => (
+              <li class="room-spec">
+                <span class="spec-dot" aria-hidden="true"></span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="room-tiers">
+            <p class="room-tiers-label">Hourly packs</p>
+            {room.tiers.map((tier) => (
+              <div class:list={['room-tier', { 'tier-hot': tier.highlight }]}>
+                <span class="tier-dur">{tier.duration}</span>
+                <div class="tier-right">
+                  {tier.priceNote && <span class="tier-note">{tier.priceNote}</span>}
+                  <span class="tier-price">{tier.price}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <a
+            href={`${whatsappBase}${encodeURIComponent(room.whatsappMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={['room-cta', room.id === 'premium-pc' ? 'btn-primary' : 'btn-ghost']}
+            data-cursor="magnetic"
+          >
+            Book {room.name}
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #rooms { overflow: hidden; }
+
+  .rooms-header { max-width: 640px; margin-bottom: 4rem; }
+
+  .rooms-sub {
+    font-size: 1.0625rem;
+    color: var(--color-text-dim);
+    max-width: 54ch;
+    margin-top: 1rem;
+  }
+
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 900px) {
+    .rooms-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .room-card {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease-expo-out);
+  }
+
+  .cat-blue   { border-color: rgba(56, 139, 253, 0.3) !important; }
+  .cat-purple { border-color: rgba(101, 40, 247, 0.45) !important; }
+
+  .room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 40px rgba(101, 40, 247, 0.25);
+  }
+
+  .room-featured {
+    background: linear-gradient(160deg, rgba(101, 40, 247, 0.12) 0%, rgba(13, 6, 20, 0.92) 60%) !important;
+    box-shadow: 0 0 0 1px rgba(101, 40, 247, 0.4), 0 8px 48px rgba(101, 40, 247, 0.2) !important;
+  }
+
+  .room-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(90deg, #6528f7, #9b6dff);
+    border-radius: 20px;
+    padding: 0.3rem 0.85rem;
+  }
+
+  .room-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .room-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.625rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+  }
+
+  .room-tagline {
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    margin-top: 0.3rem;
+  }
+
+  .room-rate {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-brand-light);
+    white-space: nowrap;
+    background: rgba(101, 40, 247, 0.12);
+    border: 1px solid rgba(101, 40, 247, 0.25);
+    border-radius: 6px;
+    padding: 0.3rem 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .room-specs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    .room-specs { grid-template-columns: 1fr; }
+  }
+
+  .room-spec {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(242, 240, 254, 0.72);
+  }
+
+  .spec-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-brand-light);
+    flex-shrink: 0;
+    margin-top: 0.5em;
+  }
+
+  .room-tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .room-tiers-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .room-tier {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    gap: 1rem;
+  }
+
+  .tier-hot {
+    background: rgba(101, 40, 247, 0.12);
+  }
+
+  .tier-dur { color: var(--color-text-dim); }
+
+  .tier-right { display: flex; align-items: center; gap: 0.5rem; }
+
+  .tier-note {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-brand-light);
+    background: rgba(101, 40, 247, 0.15);
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .tier-price {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--color-text);
+    font-size: 0.9375rem;
+  }
+
+  .room-cta {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin-top: auto;
+  }
+</style>

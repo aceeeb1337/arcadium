@@ -1,0 +1,64 @@
+@media (pointer: fine) {
+  html,
+  html * {
+    cursor: none !important;
+  }
+}
+
+#cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s var(--ease-expo-out), height 0.2s var(--ease-expo-out),
+    background-color 0.2s;
+  will-change: transform;
+}
+
+#cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(101, 40, 247, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-expo-out), height 0.3s var(--ease-expo-out),
+    border-color 0.2s;
+  will-change: transform;
+}
+
+body[data-cursor-hover] #cursor-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-brand);
+}
+
+body[data-cursor-hover] #cursor-follower {
+  width: 56px;
+  height: 56px;
+  border-color: var(--color-brand);
+}
+
+@media (pointer: coarse) {
+  #cursor-dot,
+  #cursor-follower {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-dot,
+  #cursor-follower {
+    display: none;
+  }
+}

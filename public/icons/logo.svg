@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" fill="none">
+  
+  <rect x="2" y="11" width="36" height="28" rx="10" fill="none" stroke="#6528F7" stroke-width="2.5"></rect>
+  <circle cx="26" cy="21" r="2.5" fill="#6528F7"></circle>
+  <circle cx="31" cy="26" r="2.5" fill="#6528F7"></circle>
+  <circle cx="21" cy="26" r="2.5" fill="#6528F7"></circle>
+  <circle cx="26" cy="31" r="2.5" fill="#6528F7"></circle>
+  <rect x="7" y="22" width="5" height="2" rx="1" fill="#6528F7"></rect>
+  <rect x="8.5" y="20.5" width="2" height="5" rx="1" fill="#6528F7"></rect>
+  <rect x="14" y="14" width="12" height="2" rx="1" fill="#6528F7" opacity="0.5"></rect>
+  
+  <text x="48" y="33" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="22" fill="#F2F0FE" letter-spacing="-0.5">ARCADIUM</text>
+</svg>

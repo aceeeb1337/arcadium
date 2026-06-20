@@ -1,0 +1,211 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+---
+
+<section id="about" class="section-pad" aria-label="About Arcadium">
+  <div class="container">
+    <div class="about-glow" aria-hidden="true"></div>
+
+    <div class="about-grid">
+      <div class="about-text" data-reveal>
+        <SectionLabel label="About" />
+
+        <h2 class="section-heading about-heading">
+          Gaming at its<br />
+          <span class="gradient-text">purest form</span>
+        </h2>
+
+        <div class="about-body">
+          <p>
+            Arcadium by ViderGG is Karachi's most premium gaming zone, built for one reason:
+            to give Pakistan's gamers an experience they actually deserve. No compromise on
+            hardware. No second-rate setups. Just you, the game, and the fastest monitors in
+            the country.
+          </p>
+          <p>
+            We didn't open a cafe. We built a sanctuary for serious players in the heart of
+            Gulshan-e-Iqbal. Whether you're grinding ranked, playing PS5 with friends, or
+            just here for the vibe, Arcadium has a room for you.
+          </p>
+        </div>
+
+        <div class="about-stats">
+          <div class="stat-item" data-reveal>
+            <div class="stat-row">
+              <span class="stat-value gradient-text">24</span>
+              <span class="stat-unit">/7</span>
+            </div>
+            <p class="stat-desc">Always Open</p>
+          </div>
+          <div class="stat-item" data-reveal>
+            <div class="stat-row">
+              <span class="stat-value gradient-text">7</span>
+            </div>
+            <p class="stat-desc">Private Rooms</p>
+          </div>
+          <div class="stat-item" data-reveal>
+            <div class="stat-row">
+              <span class="stat-value gradient-text">360</span>
+              <span class="stat-unit">Hz</span>
+            </div>
+            <p class="stat-desc">Pakistan's First</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-image" data-reveal>
+        <div class="about-image-inner">
+          <img
+            src="/images/gallery/zone-02.jpg"
+            alt="Arcadium gaming zone Karachi - 360Hz gaming monitors by ViderGG"
+            width="640"
+            height="426"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="about-badge" aria-label="Pakistan's first 360Hz gaming cafe">
+            <span class="badge-number">360Hz</span>
+            <span class="badge-label">Pakistan's First</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #about {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-glow {
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: clamp(300px, 50vw, 500px);
+    height: clamp(300px, 50vw, 500px);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(101,40,247,0.4) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.3;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .about-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+  }
+
+  .about-heading {
+    margin-bottom: 2rem;
+  }
+
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.0625rem;
+    color: rgba(242, 240, 254, 0.65);
+    max-width: 52ch;
+    margin-bottom: 3rem;
+  }
+
+  .about-stats {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.1em;
+    line-height: 1;
+  }
+
+  .stat-value {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .stat-unit {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-brand-light);
+  }
+
+  .stat-desc {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .about-image-inner {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .about-image-inner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+    display: block;
+  }
+
+  .about-badge {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: rgba(13, 6, 20, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .badge-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #6528f7, #c4b8f8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+</style>

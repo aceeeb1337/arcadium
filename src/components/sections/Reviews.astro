@@ -1,0 +1,35 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+---
+
+<section id="reviews" class="section-pad" aria-label="Customer reviews">
+  <div class="container">
+    <div class="reviews-header" data-reveal>
+      <SectionLabel label="Reviews" />
+      <h2 class="section-heading">
+        What players<br /><span class="gradient-text">are saying</span>
+      </h2>
+    </div>
+
+    <div class="reviews-embed" data-reveal>
+      <script src="https://elfsightcdn.com/platform.js" async></script>
+      <div class="elfsight-app-0d23938d-9eca-4a4c-9bcc-fa1b07a7c927" data-elfsight-app-lazy></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #reviews {
+    overflow: hidden;
+  }
+
+  .reviews-header {
+    max-width: 600px;
+    margin-bottom: 4rem;
+  }
+
+  .reviews-embed {
+    width: 100%;
+    min-height: 320px;
+  }
+</style>

@@ -1,0 +1,341 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { tournaments } from '../../data/tournaments';
+import { SITE } from '../../data/site';
+import { Icon } from 'astro-icon/components';
+
+const whatsappBase = `https://wa.me/${SITE.whatsapp}?text=`;
+const upcoming = tournaments.filter((t) => t.status !== 'past');
+
+const statusLabel: Record<string, string> = {
+  open: 'Registration open',
+  closing: 'Closing soon',
+  full: 'Slots full',
+  past: 'Completed',
+};
+
+const steps = [
+  { icon: 'ph:chat-circle-text-bold', title: 'Message us', text: 'Tap register on any tournament. It opens WhatsApp with your slot request ready to send.' },
+  { icon: 'ph:credit-card-bold', title: 'Confirm entry', text: 'Pay the entry fee in cash at the cafe or via EasyPaisa / JazzCash to lock your seat.' },
+  { icon: 'ph:trophy-bold', title: 'Show up & compete', text: 'Arrive 30 minutes before start, get your station, and play for the prize pool.' },
+];
+---
+
+<section id="tournaments" class="section-pad" aria-label="Tournaments">
+  <div class="container">
+    <div class="tour-glow" aria-hidden="true"></div>
+
+    <div class="tour-header" data-reveal>
+      <SectionLabel label="Upcoming" />
+      <h2 class="section-heading">
+        Compete.<br /><span class="gradient-text">Win. Repeat.</span>
+      </h2>
+      <p class="tour-sub">
+        Weekly brackets across PC and PS5. Cash prize pools, proper double-elim formats,
+        and a room full of Karachi's best.
+      </p>
+    </div>
+
+    <div class="tour-grid">
+      {upcoming.map((t) => (
+        <article class:list={['tour-card glass-card', `acc-${t.accent}`]} data-reveal>
+          <div class="tour-card-top">
+            <span class="tour-platform">{t.platform}</span>
+            <span class:list={['tour-status', `st-${t.status}`]}>
+              <span class="status-dot" aria-hidden="true"></span>
+              {statusLabel[t.status]}
+            </span>
+          </div>
+
+          <div class="tour-titles">
+            <p class="tour-game">{t.game}</p>
+            <h3 class="tour-name">{t.title}</h3>
+          </div>
+
+          <div class="tour-prize">
+            <span class="prize-label">Prize pool</span>
+            <span class="prize-value">{t.prizePool}</span>
+          </div>
+
+          <dl class="tour-meta">
+            <div class="meta-row"><dt>Date</dt><dd>{t.date} &middot; {t.time}</dd></div>
+            <div class="meta-row"><dt>Format</dt><dd>{t.format}</dd></div>
+            <div class="meta-row"><dt>Teams</dt><dd>{t.teamSize}</dd></div>
+            <div class="meta-row"><dt>Entry</dt><dd>{t.entryFee}</dd></div>
+            <div class="meta-row"><dt>Slots</dt><dd>{t.slots}</dd></div>
+          </dl>
+
+          <a
+            href={`${whatsappBase}${encodeURIComponent(t.whatsappMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={['tour-cta', t.status === 'full' ? 'btn-ghost' : 'btn-primary']}
+            data-cursor="magnetic"
+          >
+            {t.status === 'full' ? 'Join waitlist' : 'Register'}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <!-- How to enter -->
+    <div class="enter-block">
+      <div class="enter-head" data-reveal>
+        <SectionLabel label="How to enter" />
+        <h2 class="section-heading">Three steps<br /><span class="gradient-text">to the bracket</span></h2>
+      </div>
+      <div class="steps-grid" data-reveal>
+        {steps.map((s, i) => (
+          <div class="step-card glass-card">
+            <span class="step-num">0{i + 1}</span>
+            <div class="step-icon" aria-hidden="true">
+              <Icon name={s.icon} width={28} height={28} />
+            </div>
+            <h3 class="step-title">{s.title}</h3>
+            <p class="step-text">{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <p class="tour-note" data-reveal>
+      Want to host or sponsor a tournament? Reach us on WhatsApp at
+      <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer">{SITE.phone}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  #tournaments { position: relative; overflow: hidden; }
+
+  .tour-glow {
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    width: clamp(300px, 55vw, 680px);
+    height: clamp(300px, 55vw, 680px);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(101, 40, 247, 0.45) 0%, transparent 70%);
+    filter: blur(80px);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .tour-header { max-width: 640px; margin-bottom: 4rem; }
+
+  .tour-sub {
+    font-size: 1.0625rem;
+    color: var(--color-text-dim);
+    max-width: 52ch;
+    margin-top: 1rem;
+  }
+
+  .tour-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 700px) {
+    .tour-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1100px) {
+    .tour-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .tour-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease-expo-out);
+  }
+
+  .tour-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 40px rgba(101, 40, 247, 0.25);
+  }
+
+  .acc-purple { border-color: rgba(101, 40, 247, 0.4) !important; }
+  .acc-blue   { border-color: rgba(56, 139, 253, 0.3) !important; }
+  .acc-pink   { border-color: rgba(220, 50, 120, 0.35) !important; }
+
+  .tour-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .tour-platform {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-brand-light);
+    background: rgba(101, 40, 247, 0.12);
+    border: 1px solid rgba(101, 40, 247, 0.25);
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .tour-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .st-open    { color: #4ade80; }
+  .st-open .status-dot    { background: #4ade80; box-shadow: 0 0 8px rgba(74, 222, 128, 0.8); }
+  .st-closing { color: #fbbf24; }
+  .st-closing .status-dot { background: #fbbf24; box-shadow: 0 0 8px rgba(251, 191, 36, 0.8); }
+  .st-full    { color: var(--color-text-dim); }
+  .st-full .status-dot    { background: var(--color-text-dim); }
+
+  .tour-titles { display: flex; flex-direction: column; gap: 0.2rem; }
+
+  .tour-game {
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+    letter-spacing: 0.01em;
+  }
+
+  .tour-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+
+  .tour-prize {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    background: rgba(101, 40, 247, 0.1);
+    border: 1px solid rgba(101, 40, 247, 0.25);
+  }
+
+  .prize-label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .prize-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .tour-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    flex: 1;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .meta-row dt { color: var(--color-text-dim); flex-shrink: 0; }
+  .meta-row dd {
+    margin: 0;
+    color: rgba(242, 240, 254, 0.82);
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .tour-cta { width: 100%; justify-content: center; text-align: center; margin-top: auto; }
+
+  /* How to enter */
+  .enter-block { margin-top: clamp(4.5rem, 9vw, 8rem); }
+  .enter-head { max-width: 600px; margin-bottom: 3rem; }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .steps-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .step-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .step-num {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(101, 40, 247, 0.25);
+  }
+
+  .step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(101, 40, 247, 0.12);
+    border: 1px solid rgba(101, 40, 247, 0.25);
+    color: var(--color-brand-light);
+  }
+
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1875rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .step-text {
+    font-size: 0.9rem;
+    color: rgba(242, 240, 254, 0.6);
+    line-height: 1.65;
+  }
+
+  .tour-note {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    margin-top: 3.5rem;
+  }
+
+  .tour-note a { color: var(--color-brand-light); text-decoration: none; }
+  .tour-note a:hover { color: #fff; }
+</style>

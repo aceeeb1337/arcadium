@@ -1,0 +1,289 @@
+---
+const CLOSE_DATE = '2026-05-14';
+---
+
+<div id="popup-overlay" class="popup-overlay" hidden aria-hidden="true">
+
+  <div
+    id="popup-card"
+    class="popup-card glass-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="popup-title"
+  >
+    <button id="popup-close" class="popup-close" aria-label="Close popup">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <span class="popup-eyebrow">FULL LAN · KARACHI, PAKISTAN</span>
+
+    <h2 id="popup-title" class="popup-title">
+      Bombsite <span class="gradient-text">Battles</span>
+    </h2>
+    <p class="popup-by">CS2 Tournament by <strong>Arcadium</strong></p>
+
+    <div class="popup-stats">
+      <div class="popup-stat">
+        <span class="popup-stat-label">Prize Pool</span>
+        <span class="popup-stat-value">TBD</span>
+      </div>
+      <div class="popup-stat">
+        <span class="popup-stat-label">Teams</span>
+        <span class="popup-stat-value">16</span>
+      </div>
+      <div class="popup-stat">
+        <span class="popup-stat-label">Format</span>
+        <span class="popup-stat-value">Double Elim</span>
+      </div>
+      <div class="popup-stat">
+        <span class="popup-stat-label">Type</span>
+        <span class="popup-stat-value">Full LAN</span>
+      </div>
+    </div>
+
+    <p class="popup-deadline">
+      Registration closes <strong>May 14, 2026</strong>. Limited to 16 teams.
+    </p>
+
+    <a href="/bombsite" class="btn-primary popup-cta">
+      Register Your Team →
+    </a>
+
+    <button id="popup-skip" class="popup-skip">Next time</button>
+  </div>
+
+</div>
+
+<script define:vars={{ CLOSE_DATE }}>
+  const overlay = document.getElementById('popup-overlay');
+  const card    = document.getElementById('popup-card');
+  const closeBtn = document.getElementById('popup-close');
+  const skipBtn  = document.getElementById('popup-skip');
+
+  const STORAGE_KEY = 'popup-bombsite-v1';
+
+  function dismiss() {
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    setTimeout(() => {
+      overlay.setAttribute('hidden', '');
+      overlay.setAttribute('aria-hidden', 'true');
+    }, 300);
+    sessionStorage.setItem(STORAGE_KEY, 'dismissed');
+  }
+
+  function show() {
+    if (!overlay) return;
+    overlay.removeAttribute('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      overlay.classList.add('is-open');
+    }));
+    card?.focus();
+  }
+
+  if (sessionStorage.getItem(STORAGE_KEY) === 'dismissed') {
+  } else {
+    const close = new Date(CLOSE_DATE + 'T23:59:59');
+    if (new Date() <= close) {
+      setTimeout(show, 900);
+    }
+  }
+
+  closeBtn?.addEventListener('click', dismiss);
+  skipBtn?.addEventListener('click', dismiss);
+
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) dismiss();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && !overlay.hasAttribute('hidden')) {
+      dismiss();
+    }
+  });
+
+  overlay?.querySelector('.popup-cta')?.addEventListener('click', () => {
+    sessionStorage.setItem(STORAGE_KEY, 'dismissed');
+  });
+</script>
+
+<style>
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(7, 3, 14, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .popup-overlay[hidden] {
+    display: none;
+  }
+
+  .popup-overlay.is-open {
+    opacity: 1;
+  }
+
+  .popup-card {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    padding: clamp(1.75rem, 5vw, 2.75rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    border-color: rgba(101, 40, 247, 0.3);
+    box-shadow:
+      0 0 0 1px rgba(101, 40, 247, 0.1),
+      0 24px 64px rgba(0, 0, 0, 0.6),
+      0 0 80px rgba(101, 40, 247, 0.12);
+    transform: translateY(16px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+  }
+
+  .popup-overlay.is-open .popup-card {
+    transform: translateY(0);
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .popup-close:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--color-text);
+  }
+
+  .popup-eyebrow {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-light);
+    padding: 0.3rem 0.875rem;
+    border: 1px solid rgba(101, 40, 247, 0.35);
+    border-radius: 100px;
+  }
+
+  .popup-title {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .popup-by {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .popup-by strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .popup-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+    width: 100%;
+    margin-block: 0.25rem;
+  }
+
+  .popup-stat {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    align-items: center;
+  }
+
+  .popup-stat-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .popup-stat-value {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .popup-deadline {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .popup-deadline strong {
+    color: #a78bfa;
+    font-weight: 600;
+  }
+
+  .popup-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .popup-skip {
+    background: none;
+    border: none;
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s;
+    margin-top: -0.25rem;
+  }
+
+  .popup-skip:hover {
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 400px) {
+    .popup-stats {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .popup-stat-value {
+      font-size: 0.875rem;
+    }
+  }
+</style>

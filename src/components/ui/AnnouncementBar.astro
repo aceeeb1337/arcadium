@@ -1,0 +1,194 @@
+---
+const CLOSE_DATE = '2026-05-14';
+---
+
+<div id="ann-bar" class="ann-bar" role="region" aria-label="Tournament announcement">
+  <div class="ann-inner">
+
+    <span class="ann-badge">OPEN</span>
+
+    <span class="ann-text">
+      <strong>Bombsite Battles</strong><span class="ann-by"> by Arcadium</span>
+      <span class="ann-sep">·</span>
+      <span id="ann-countdown" class="ann-countdown">Registration closes May 14</span>
+    </span>
+
+    <a href="/bombsite" class="ann-cta">Register Now →</a>
+
+  </div>
+</div>
+
+<div id="ann-spacer" class="ann-spacer"></div>
+
+<script define:vars={{ CLOSE_DATE }}>
+  const bar     = document.getElementById('ann-bar');
+  const spacer  = document.getElementById('ann-spacer');
+  const countEl = document.getElementById('ann-countdown');
+
+  function setHeight(h) {
+    document.documentElement.style.setProperty('--ann-bar-height', h);
+    if (spacer) spacer.style.height = h;
+  }
+
+  const BAR_H = (bar?.offsetHeight ?? 48) + 'px';
+  setHeight(BAR_H);
+
+  function hide() {
+    bar?.setAttribute('hidden', '');
+    setHeight('0px');
+  }
+
+  const close = new Date(CLOSE_DATE + 'T23:59:59');
+  if (new Date() > close) {
+    hide();
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tickBanner() {
+    if (!bar || bar.hasAttribute('hidden') || !countEl) return;
+    const diff = close.getTime() - Date.now();
+    if (diff <= 0) { hide(); return; }
+    const days  = Math.floor(diff / 864e5);
+    const hours = Math.floor((diff % 864e5) / 36e5);
+    const mins  = Math.floor((diff % 36e5) / 6e4);
+    const secs  = Math.floor((diff % 6e4) / 1e3);
+    if (days > 1) {
+      countEl.textContent = `Closes in ${days}d ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    } else if (days === 1) {
+      countEl.textContent = `Last day! ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    } else {
+      countEl.textContent = `Closes in ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    }
+  }
+  tickBanner();
+  setInterval(tickBanner, 1000);
+
+</script>
+
+<style is:global>
+  :root { --ann-bar-height: 50px; }
+</style>
+
+<style>
+  .ann-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(90deg, rgba(101,40,247,0.18) 0%, rgba(30,10,60,0.96) 50%, rgba(101,40,247,0.18) 100%);
+    border-bottom: 1px solid rgba(101, 40, 247, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .ann-bar[hidden] {
+    display: none;
+  }
+
+  .ann-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding: 0.6rem clamp(1.25rem, 5vw, 3rem);
+    min-height: 48px;
+  }
+
+  .ann-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: var(--color-brand);
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+  }
+
+  .ann-badge::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .ann-text {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ann-text strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .ann-sep {
+    margin-inline: 0.4rem;
+    opacity: 0.4;
+  }
+
+  .ann-countdown {
+    color: #a78bfa;
+  }
+
+  .ann-cta {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #fff;
+    background: var(--color-brand);
+    padding: 0.375rem 1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .ann-cta:hover {
+    background: var(--color-brand-light);
+    box-shadow: 0 0 16px rgba(101, 40, 247, 0.5);
+  }
+
+  .ann-spacer {
+    height: 48px;
+    transition: height 0.2s;
+  }
+
+  @media (max-width: 600px) {
+    .ann-by {
+      display: none;
+    }
+    .ann-cta {
+      padding: 0.375rem 0.625rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .ann-sep,
+    .ann-countdown {
+      display: none;
+    }
+  }
+</style>

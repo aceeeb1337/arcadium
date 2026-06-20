@@ -1,0 +1,38 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Tournaments from '../components/sections/Tournaments.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { SITE } from '../data/site';
+---
+
+<MainLayout
+  title="Tournaments"
+  description="Gaming tournaments at Arcadium Karachi. Weekly PC and PS5 brackets with cash prize pools — Tekken 8, EA FC 25, Valorant, CS2. Register on WhatsApp."
+>
+  <PageHero
+    eyebrow="Tournaments"
+    titleLine1="Compete."
+    titleAccent="Win. Repeat."
+    sub="Weekly brackets across PC and PS5 with real cash prize pools. Solo fighters and full five-stacks welcome. Karachi's most competitive room."
+  >
+    <a href="#tournaments" class="btn-primary" data-cursor="magnetic">See upcoming events</a>
+    <a
+      href={SITE.whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-ghost"
+      data-cursor="magnetic"
+    >
+      Ask about hosting
+    </a>
+  </PageHero>
+
+  <Tournaments />
+  <CtaBand
+    heading="Think you've got it?"
+    sub="Register for the next bracket, or get in touch to host your own event at Arcadium."
+    ctaLabel="Register on WhatsApp"
+    whatsappMessage="Hi! I want to register for an upcoming tournament at Arcadium."
+  />
+</MainLayout>

@@ -1,0 +1,82 @@
+---
+import BaseHead from '../components/layout/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import CustomCursor from '../components/ui/CustomCursor.astro';
+import PageProgress from '../components/ui/PageProgress.astro';
+import Loader from '../components/ui/Loader.astro';
+import NoiseOverlay from '../components/ui/NoiseOverlay.astro';
+import WhatsAppButton from '../components/ui/WhatsAppButton.astro';
+
+import '../styles/global.css';
+import '../styles/cursor.css';
+import '../styles/loader.css';
+import '../styles/noise.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-PK" class="dark">
+  <head>
+    <BaseHead title={title} description={description} ogImage={ogImage} />
+  </head>
+  <body class="is-loading">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <Loader />
+    <NoiseOverlay />
+    <PageProgress />
+    <CustomCursor />
+
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <WhatsAppButton />
+
+    <script>
+      import '../scripts/core/gsap-setup';
+    </script>
+    <script>
+      import '../scripts/animations/loader';
+    </script>
+    <script>
+      import '../scripts/core/lenis';
+    </script>
+    <script>
+      import '../scripts/core/cursor';
+    </script>
+    <script>
+      import '../scripts/animations/progress';
+    </script>
+    <script>
+      import '../scripts/animations/hero';
+    </script>
+    <script>
+      import '../scripts/animations/reveals';
+    </script>
+    <script>
+      import '../scripts/animations/magnetic';
+    </script>
+    <script>
+      import '../scripts/animations/pcSpecs';
+    </script>
+    <script>
+      import '../scripts/animations/pricing';
+    </script>
+    <script>
+      import '../scripts/animations/gallery';
+    </script>
+  </body>
+</html>

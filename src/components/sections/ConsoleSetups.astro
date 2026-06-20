@@ -1,0 +1,315 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { categories, consoleGames } from '../../data/pricing';
+import { SITE } from '../../data/site';
+import { Icon } from 'astro-icon/components';
+
+const ps5 = categories.find((c) => c.id === 'ps5')!;
+const whatsappBase = `https://wa.me/${SITE.whatsapp}?text=`;
+---
+
+<section id="console-setups" class="section-pad" aria-label="Console setups">
+  <div class="container">
+    <div class="console-glow" aria-hidden="true"></div>
+
+    <div class="console-grid">
+      <!-- PS5 card -->
+      <div class="ps5-card glass-card" data-reveal>
+        <div class="ps5-icon" aria-hidden="true">
+          <Icon name="simple-icons:playstation" width={44} height={44} />
+        </div>
+        <h3 class="ps5-name">PlayStation 5</h3>
+        <p class="ps5-desc">
+          Sony's flagship console on a large screen with DualSense haptics, 4K visuals,
+          and the full game library. Bring your squad &mdash; up to four players per session.
+        </p>
+
+        <ul class="ps5-features">
+          {ps5.features.map((f) => (
+            <li class="ps5-feature">
+              <span class="feature-dot" aria-hidden="true"></span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Controller pricing -->
+      <div class="ps5-pricing glass-card" data-reveal>
+        <p class="pricing-label">Per-hour rates</p>
+        <div class="ctrl-tiers">
+          {ps5.tiers.map((tier) => (
+            <div class:list={['ctrl-tier', { 'ctrl-hot': tier.highlight }]}>
+              <div class="ctrl-left">
+                <span class="ctrl-dur">{tier.duration}</span>
+                {tier.priceNote && <span class="ctrl-note">{tier.priceNote}</span>}
+              </div>
+              <span class="ctrl-price">{tier.price}</span>
+            </div>
+          ))}
+        </div>
+        <a
+          href={`${whatsappBase}${encodeURIComponent(ps5.whatsappMessage)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary ps5-cta"
+          data-cursor="magnetic"
+        >
+          Book a PS5 session
+        </a>
+      </div>
+    </div>
+
+    <!-- Game library -->
+    <div class="games-block">
+      <div class="games-head" data-reveal>
+        <SectionLabel label="Game Library" />
+        <h2 class="section-heading">
+          Bring your<br /><span class="gradient-text">game face</span>
+        </h2>
+        <p class="games-sub">
+          A rotating shelf of the biggest titles. Don't see your favourite? Ask us &mdash;
+          we add games on request.
+        </p>
+      </div>
+
+      <div class="games-grid" data-reveal>
+        {consoleGames.map((g) => (
+          <div class="game-card">
+            <span class="game-title">{g.title}</span>
+            <div class="game-meta">
+              <span class="game-genre">{g.genre}</span>
+              <span class="game-players">{g.players} players</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #console-setups { position: relative; overflow: hidden; }
+
+  .console-glow {
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: clamp(300px, 55vw, 650px);
+    height: clamp(300px, 55vw, 650px);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(220, 50, 120, 0.4) 0%, transparent 70%);
+    filter: blur(80px);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .console-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 900px) {
+    .console-grid { grid-template-columns: 1.3fr 1fr; }
+  }
+
+  .ps5-card,
+  .ps5-pricing {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ps5-card { gap: 1.25rem; border-color: rgba(220, 50, 120, 0.3) !important; }
+
+  .ps5-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: rgba(220, 50, 120, 0.12);
+    border: 1px solid rgba(220, 50, 120, 0.3);
+    color: #f06ba8;
+  }
+
+  .ps5-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .ps5-desc {
+    font-size: 0.9375rem;
+    color: rgba(242, 240, 254, 0.6);
+    line-height: 1.7;
+    max-width: 46ch;
+  }
+
+  .ps5-features {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    .ps5-features { grid-template-columns: 1fr; }
+  }
+
+  .ps5-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(242, 240, 254, 0.72);
+  }
+
+  .feature-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #f06ba8;
+    flex-shrink: 0;
+    margin-top: 0.5em;
+  }
+
+  .ps5-pricing {
+    gap: 1.25rem;
+    justify-content: center;
+    border-color: rgba(101, 40, 247, 0.3) !important;
+  }
+
+  .pricing-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .ctrl-tiers { display: flex; flex-direction: column; gap: 0.625rem; }
+
+  .ctrl-tier {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .ctrl-hot {
+    border-color: rgba(101, 40, 247, 0.45) !important;
+    background: rgba(101, 40, 247, 0.1);
+  }
+
+  .ctrl-left { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+
+  .ctrl-dur {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .ctrl-note {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-brand-light);
+    background: rgba(101, 40, 247, 0.15);
+    border-radius: 4px;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .ctrl-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .ps5-cta { width: 100%; justify-content: center; text-align: center; margin-top: 0.5rem; }
+
+  .games-block { margin-top: clamp(4rem, 8vw, 7rem); }
+
+  .games-head { max-width: 620px; margin-bottom: 3rem; }
+
+  .games-sub {
+    font-size: 1.0625rem;
+    color: var(--color-text-dim);
+    max-width: 50ch;
+    margin-top: 1rem;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 700px) {
+    .games-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .games-grid { grid-template-columns: repeat(5, 1fr); }
+  }
+
+  .game-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    min-height: 120px;
+    transition: border-color 0.3s, transform 0.3s var(--ease-expo-out);
+  }
+
+  .game-card:hover {
+    border-color: rgba(101, 40, 247, 0.5);
+    transform: translateY(-3px);
+  }
+
+  .game-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .game-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: auto;
+  }
+
+  .game-genre {
+    font-size: 0.75rem;
+    color: var(--color-brand-light);
+  }
+
+  .game-players {
+    font-size: 0.6875rem;
+    color: var(--color-text-dim);
+  }
+</style>

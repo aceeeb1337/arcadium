@@ -1,0 +1,281 @@
+---
+import { SITE } from '../../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title = SITE.fullName,
+  description = SITE.description,
+  ogImage = '/images/og/og-default.jpg',
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const pageTitle =
+  title === SITE.fullName
+    ? 'Arcadium | Gaming Zone Karachi | ViderGG | 360Hz Cafe Pakistan'
+    : `${title} | Arcadium`;
+
+const ogImageURL = new URL(ogImage, SITE.url).toString();
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['EntertainmentBusiness', 'LocalBusiness'],
+  '@id': SITE.url,
+  name: SITE.fullName,
+  alternateName: [
+    'Arcadium',
+    'Arcadium ViderGG',
+    'Arcadium ViderMedia',
+    'Arcadium Gaming Zone',
+    'Arcadium Gaming Zone Karachi',
+    'Arcadium Gaming Cafe Karachi',
+    'ViderGG',
+    'ViderMedia',
+    'Arcadium Pakistan',
+    'Arcadium Karachi',
+  ],
+  description: SITE.description,
+  slogan: SITE.tagline,
+  url: SITE.url,
+  telephone: SITE.phone,
+  email: SITE.email,
+  image: ogImageURL,
+  logo: new URL('/favicon.svg', SITE.url).toString(),
+  priceRange: 'PKR 300 – PKR 1,000 per hour',
+  currenciesAccepted: 'PKR',
+  paymentAccepted: 'Cash, Bank Transfer, EasyPaisa, JazzCash',
+  openingHours: 'Mo-Su 00:00-23:59',
+  keywords:
+    'gaming zone karachi, gaming cafe karachi, arcadium, arcadium pakistan, arcadium karachi, arcadium vidergg, arcadium vidermedia, vidergg, vidermedia, 360hz gaming cafe, pc gaming cafe pakistan, ps5 cafe karachi, gaming lounge karachi, esports cafe karachi, gulshan gaming cafe, gaming zone gulshan',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.line1,
+    addressLocality: 'Karachi',
+    addressRegion: 'Sindh',
+    postalCode: '75300',
+    addressCountry: 'PK',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 24.9074438,
+    longitude: 67.110612,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Karachi' },
+    { '@type': 'State', name: 'Sindh' },
+    { '@type': 'Country', name: 'Pakistan' },
+  ],
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'ViderMedia',
+    alternateName: 'ViderGG',
+    url: 'https://vidermedia.com/',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.3',
+    reviewCount: '115',
+    bestRating: '5',
+    worstRating: '1',
+  },
+  makesOffer: [
+    {
+      '@type': 'Offer',
+      name: 'Standard PC Room',
+      description: 'Gaming session on Ryzen 5 5600, RTX 4060, 180Hz Asus display with Logitech peripherals',
+      price: '300',
+      priceCurrency: 'PKR',
+      unitText: 'per hour',
+    },
+    {
+      '@type': 'Offer',
+      name: 'Premium PC Room',
+      description: 'Gaming session on Ryzen 5 9600X, RTX 5060, 360Hz BenQ Zowie display with Razer peripherals',
+      price: '420',
+      priceCurrency: 'PKR',
+      unitText: 'per hour',
+    },
+    {
+      '@type': 'Offer',
+      name: 'PS5 Session (1 Controller)',
+      description: 'PlayStation 5 gaming session with 1 controller',
+      price: '400',
+      priceCurrency: 'PKR',
+      unitText: 'per hour',
+    },
+    {
+      '@type': 'Offer',
+      name: 'PS5 Session (2 Controllers)',
+      description: 'PlayStation 5 gaming session with 2 controllers',
+      price: '700',
+      priceCurrency: 'PKR',
+      unitText: 'per hour',
+    },
+  ],
+  sameAs: [
+    'https://www.instagram.com/arcadium_gg/',
+    'https://www.facebook.com/arcadiumbyvider/',
+    'https://www.linkedin.com/company/arcadiumgg/',
+    'https://share.google/zsOTC1cqS5aKHxjvg',
+  ],
+  hasMap: 'https://share.google/zsOTC1cqS5aKHxjvg',
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: '360Hz Gaming Monitors', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'PlayStation 5', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'RTX 5060 Gaming PCs', value: true },
+    { '@type': 'LocationFeatureSpecification', name: '7 Private Gaming Rooms', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Air Conditioning', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Open 24/7', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'High-Speed Internet', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Mechanical Keyboards', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Gaming Headsets', value: true },
+  ],
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.fullName,
+  alternateName: ['Arcadium', 'ViderGG', 'Arcadium Gaming Zone Karachi'],
+  url: SITE.url,
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is Arcadium?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Arcadium by ViderGG is a premium gaming zone and gaming cafe in Karachi, Pakistan. It is Pakistan's first 360Hz gaming cafe, offering 7 private gaming rooms with high-end PCs (RTX 5060), PlayStation 5, and Standard and Premium setups in Gulshan-e-Iqbal, Karachi.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Where is Arcadium gaming zone located in Karachi?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Arcadium gaming zone is located at Office #1, Mezzanine Floor, Farhan Tower, Gulshan-e-Iqbal Block 10-A, Karachi, Pakistan.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: "What are Arcadium's opening hours?",
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Arcadium gaming zone Karachi is open 24 hours a day, 7 days a week, including weekends and public holidays.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does it cost to play at Arcadium gaming cafe Karachi?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Standard rooms are Rs 300/hr walk-in (3-hour pack: Rs 800). Premium 360Hz rooms are Rs 420/hr walk-in (3-hour pack: Rs 1,000). PS5 gaming is Rs 400/hr for 1 controller, Rs 700/hr for 2 controllers, and Rs 1,000/hr for 4 controllers.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What gaming platforms does Arcadium have?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Arcadium has high-end gaming PCs with RTX 5060 GPUs, Ryzen 5 9600X processors, and 360Hz Zowie displays, plus PlayStation 5 consoles supporting up to 4 players.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is Arcadium owned by ViderGG or ViderMedia?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Arcadium is a gaming zone brand by ViderGG, which is part of ViderMedia. The full brand name is Arcadium by ViderGG.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I book a session at Arcadium gaming zone Karachi?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'You can book a session at Arcadium Karachi by contacting us on WhatsApp at +92 335 9557043. Walk-ins are also welcome at any time.',
+      },
+    },
+  ],
+};
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+<link rel="alternate" hreflang="en-PK" href="https://arcadium.pk/" />
+<link rel="alternate" hreflang="x-default" href="https://arcadium.pk/" />
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#0D0614" />
+<link rel="canonical" href={canonicalURL} />
+
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="keywords" content="gaming zone karachi, gaming cafe karachi, arcadium, arcadium pakistan, arcadium karachi, arcadium vidergg, arcadium vidermedia, vidergg, vidermedia, arcadium gaming zone, arcadium gaming zone karachi, arcadium by vidergg, 360Hz gaming cafe, 360Hz gaming Pakistan, gaming lounge Karachi, PC gaming cafe, PS5 cafe Karachi, RTX 5060, premium gaming room, esports cafe Pakistan, Gulshan gaming cafe, gaming zone Gulshan, gaming cafe Gulshan-e-Iqbal, best gaming cafe Karachi, gaming zone Pakistan, gaming center karachi, cyber cafe karachi gaming" />
+<meta name="author" content="Arcadium by ViderGG" />
+<meta name="rating" content="general" />
+<meta name="application-name" content="Arcadium by ViderGG" />
+
+<meta name="geo.region" content="PK-SD" />
+<meta name="geo.placename" content="Karachi, Sindh, Pakistan" />
+<meta name="geo.position" content="24.9074438;67.110612" />
+<meta name="ICBM" content="24.9074438, 67.110612" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Arcadium by ViderGG" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Arcadium by ViderGG - Gaming Zone Karachi | Pakistan's first 360Hz gaming cafe" />
+<meta property="og:locale" content="en_PK" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+<meta name="twitter:image:alt" content="Arcadium by ViderGG - Gaming Zone Karachi" />
+
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<link rel="sitemap" href="/sitemap.xml" />
+
+<link rel="preconnect" href="https://elfsightcdn.com" crossorigin />
+<link rel="dns-prefetch" href="https://apps.elfsight.com" />
+
+<link rel="preload" as="image" href="/images/hero-bg.jpg" fetchpriority="high" />
+
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-600.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-700.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/poppins-latin-400.woff2" crossorigin />
+
+<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZND70WS19E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZND70WS19E');
+</script>

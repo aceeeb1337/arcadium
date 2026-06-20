@@ -1,0 +1,87 @@
+---
+import { SITE } from '../../data/site';
+---
+
+<footer id="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-copy">&copy; {new Date().getFullYear()} Arcadium by ViderGG</p>
+
+    <nav aria-label="Footer navigation" class="footer-nav">
+      <a href="#about">About</a>
+      <a href="#specs">Specs</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#location">Location</a>
+    </nav>
+
+    <div class="footer-right">
+      <p class="footer-copy footer-partner">
+        Partner: <a href="https://vidermedia.com/" target="_blank" rel="noopener noreferrer" class="footer-credit">ViderMedia</a>
+      </p>
+      <p class="footer-copy">Built by <a href="https://sudoosama.com" target="_blank" rel="noopener noreferrer" class="footer-credit">sudoosama</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  #site-footer {
+    background: #000;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-block: 1.25rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.6875rem;
+    color: rgba(242, 240, 254, 0.3);
+    white-space: nowrap;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 1.25rem;
+    justify-content: center;
+  }
+
+  .footer-nav a {
+    font-size: 0.6875rem;
+    color: rgba(242, 240, 254, 0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-nav a:hover {
+    color: #f2f0fe;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+
+  .footer-partner {
+    white-space: nowrap;
+  }
+
+  .footer-credit {
+    color: var(--color-brand-light);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .footer-credit:hover {
+    opacity: 1;
+  }
+</style>

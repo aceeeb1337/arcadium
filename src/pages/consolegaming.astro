@@ -1,0 +1,40 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ConsoleSetups from '../components/sections/ConsoleSetups.astro';
+import Gallery from '../components/sections/Gallery.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { SITE } from '../data/site';
+---
+
+<MainLayout
+  title="Console Gaming"
+  description="PlayStation 5 gaming at Arcadium Karachi. Up to 4 players, DualSense controllers, 4K on a large screen. From Rs 400/hr. FC 25, Tekken 8, Mortal Kombat and more."
+>
+  <PageHero
+    eyebrow="Console Gaming"
+    titleLine1="PlayStation 5,"
+    titleAccent="your way"
+    sub="Grab a controller, grab your crew. PS5 on a large screen with DualSense haptics, 4K visuals, and a shelf full of the biggest titles. Up to four players."
+  >
+    <a
+      href={SITE.whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-primary"
+      data-cursor="magnetic"
+    >
+      Book a PS5 session
+    </a>
+    <a href="#console-setups" class="btn-ghost" data-cursor="magnetic">See rates &amp; games</a>
+  </PageHero>
+
+  <ConsoleSetups />
+  <Gallery />
+  <CtaBand
+    heading="Bring the squad."
+    sub="Up to four controllers, every major title, all on a big screen. Book your couch."
+    ctaLabel="Book a PS5 session"
+    whatsappMessage="Hi! I want to book a PS5 console session at Arcadium. Please confirm availability."
+  />
+</MainLayout>

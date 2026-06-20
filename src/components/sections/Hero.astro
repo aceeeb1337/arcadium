@@ -1,0 +1,186 @@
+---
+import { SITE } from '../../data/site';
+---
+
+<section id="hero" aria-label="Hero">
+  <div id="hero-bg" aria-hidden="true">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="/images/hero-bg.jpg"
+    >
+      <source src="/images/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+  </div>
+
+  <div class="hero-content container">
+    <p class="hero-eyebrow" data-split="chars">{SITE.tagline}</p>
+
+    <h1 class="hero-headline">
+      <span class="hero-line" data-split="chars">Pakistan's First</span>
+      <span class="hero-hz">& Only BenQ <span class="gradient-text">360Hz</span></span>
+      <span class="hero-line" data-split="chars">Gaming Cafe</span>
+    </h1>
+
+    <p class="hero-sub" data-split="words">
+      Karachi's most premium gaming zone. Every frame counts, and we've got 360 of them.
+    </p>
+
+    <div class="hero-ctas">
+      <a
+        href={SITE.whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary"
+        data-cursor="magnetic"
+        aria-label="Book a session via WhatsApp"
+      >
+        Book Now
+      </a>
+      <a href="#pricing" class="btn-ghost" data-cursor="magnetic">
+        Pricing
+      </a>
+    </div>
+  </div>
+
+  <div id="hero-scroll" aria-hidden="true">
+    <span class="scroll-line"></span>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+<style>
+  #hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #hero-bg img,
+  #hero-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(13, 6, 20, 0.9) 0%,
+      rgba(13, 6, 20, 0.7) 50%,
+      rgba(101, 40, 247, 0.15) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--header-height);
+    max-width: clamp(640px, 60vw, 1200px);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-brand-light);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+
+  .hero-headline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    font-size: clamp(2.75rem, 5.5vw, 9rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .hero-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+  }
+
+  .hero-hz {
+    display: block;
+    padding-bottom: 0.12em;
+  }
+
+
+  .hero-sub {
+    font-size: clamp(1rem, 1.5vw, 1.75rem);
+    color: rgba(242, 240, 254, 0.65);
+    max-width: 48ch;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    overflow: hidden;
+  }
+
+  #hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .scroll-line {
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--color-brand), transparent);
+    animation: scrollLineDrop 2s ease-in-out infinite;
+  }
+
+  .scroll-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    writing-mode: vertical-lr;
+  }
+
+  @keyframes scrollLineDrop {
+    0%, 100% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-line { animation: none; }
+  }
+</style>

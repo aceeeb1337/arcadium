@@ -1,0 +1,289 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+
+const images = [
+  { src: '/images/gallery/SAP_5236.jpg', alt: 'Premium gaming zone interior at Arcadium by ViderGG, Gulshan-e-Iqbal Karachi', wide: true },
+  { src: '/images/gallery/DSC_1075.jpg', alt: 'RTX 5060 gaming PC setup at Arcadium gaming cafe Karachi' },
+  { src: '/images/gallery/SAP_5212.jpg', alt: 'Ergonomic gaming chairs at Arcadium private gaming room Karachi' },
+  { src: '/images/gallery/DSC_1077.jpg', alt: 'High-end PC gaming stations at Arcadium gaming zone Gulshan Karachi', wide: true },
+  { src: '/images/gallery/SAP_5230.jpg', alt: 'RGB ambient lighting at Arcadium gaming cafe Gulshan-e-Iqbal Karachi' },
+  { src: '/images/gallery/DSC_1088.jpg', alt: 'Arcadium gaming area with premium setups, Karachi Pakistan' },
+  { src: '/images/gallery/zone-02.jpg', alt: '360Hz BenQ Zowie gaming monitors at Arcadium, Pakistan\'s first 360Hz gaming cafe', wide: true },
+  { src: '/images/gallery/zone-01.jpg', alt: 'Razer peripheral gaming rig at Arcadium premium room Karachi' },
+  { src: '/images/gallery/zone-07.jpg', alt: 'Gaming setup with RGB lighting and mechanical keyboard at Arcadium Karachi' },
+  { src: '/images/gallery/zone-03.jpg', alt: 'PlayStation 5 console gaming station at Arcadium gaming zone Karachi' },
+  { src: '/images/gallery/zone-04.jpg', alt: 'Gaming chair and desk setup inside private room at Arcadium Karachi' },
+  { src: '/images/gallery/zone-06.jpg', alt: '180Hz Asus display gaming setup at Arcadium Standard Room Karachi' },
+];
+---
+
+<section id="gallery" class="section-pad" aria-label="Photo gallery">
+  <div class="container">
+    <div class="gallery-header" data-reveal>
+      <SectionLabel label="Gallery" />
+      <h2 class="section-heading">
+        See the<br /><span class="gradient-text">zone</span>
+      </h2>
+      <p class="gallery-sub">
+        Don't just take our word for it. Come see what a proper gaming setup looks like.
+      </p>
+    </div>
+
+    <div class="gallery-grid" aria-label="Photos of Arcadium gaming cafe">
+      {images.map((img, i) => (
+        <button
+          class:list={['gallery-item', { 'gallery-wide': img.wide }]}
+          data-gallery-index={i}
+          aria-label={`View photo: ${img.alt}`}
+          type="button"
+        >
+          <img
+            src={img.src}
+            alt={img.alt}
+            width={img.wide ? 840 : 420}
+            height={img.wide ? 473 : 280}
+            loading="lazy"
+            decoding="async"
+          />
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<div id="lightbox" aria-modal="true" role="dialog" aria-label="Image viewer" hidden>
+  <button id="lightbox-close" aria-label="Close">&times;</button>
+  <button id="lightbox-prev" aria-label="Previous image">&#8249;</button>
+  <button id="lightbox-next" aria-label="Next image">&#8250;</button>
+  <div id="lightbox-img-wrap">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+  <p id="lightbox-counter" aria-live="polite"></p>
+</div>
+
+<style>
+  #gallery {
+    overflow: hidden;
+  }
+
+  .gallery-header {
+    max-width: 600px;
+    margin-bottom: 4rem;
+  }
+
+  .gallery-sub {
+    font-size: 1.0625rem;
+    color: var(--color-text-dim);
+    max-width: 48ch;
+    margin-top: 1rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: clamp(200px, 60vw, 320px);
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: clamp(160px, 22vw, 280px);
+      grid-auto-flow: row dense;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: clamp(160px, 18vw, 260px);
+      grid-auto-flow: row dense;
+    }
+  }
+
+  .gallery-item {
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--color-bg-elevated);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+  }
+
+  @media (min-width: 480px) {
+    .gallery-wide {
+      grid-column: span 2;
+    }
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s var(--ease-expo-out);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item:hover img { transform: none; }
+  }
+
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  #lightbox[hidden] {
+    display: none;
+  }
+
+  #lightbox-img-wrap {
+    max-width: min(90vw, 1100px);
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #lightbox-img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    user-select: none;
+  }
+
+  #lightbox-close {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    line-height: 1;
+    color: rgba(255,255,255,0.7);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+    z-index: 1001;
+  }
+
+  #lightbox-close:hover { color: #fff; }
+
+  #lightbox-prev,
+  #lightbox-next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    line-height: 1;
+    color: rgba(255,255,255,0.5);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    transition: color 0.2s;
+    z-index: 1001;
+    user-select: none;
+  }
+
+  #lightbox-prev { left: 0.5rem; }
+  #lightbox-next { right: 0.5rem; }
+  #lightbox-prev:hover,
+  #lightbox-next:hover { color: #fff; }
+
+  #lightbox-counter {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1em;
+  }
+</style>
+
+<script>
+  const images = [
+    { src: '/images/gallery/SAP_5236.jpg', alt: 'Arcadium gaming zone' },
+    { src: '/images/gallery/DSC_1075.jpg', alt: 'Arcadium gaming setup' },
+    { src: '/images/gallery/SAP_5212.jpg', alt: 'Arcadium gaming chairs' },
+    { src: '/images/gallery/DSC_1077.jpg', alt: 'Arcadium PC stations' },
+    { src: '/images/gallery/SAP_5230.jpg', alt: 'Arcadium zone lighting' },
+    { src: '/images/gallery/DSC_1088.jpg', alt: 'Arcadium gaming area' },
+    { src: '/images/gallery/zone-02.jpg', alt: '360Hz monitors at Arcadium' },
+    { src: '/images/gallery/zone-01.jpg', alt: 'High-spec gaming rigs' },
+    { src: '/images/gallery/zone-07.jpg', alt: 'Gaming setups with RGB lighting' },
+    { src: '/images/gallery/zone-03.jpg', alt: 'Console gaming section' },
+    { src: '/images/gallery/zone-04.jpg', alt: 'Arcadium gaming chair closeup' },
+    { src: '/images/gallery/zone-06.jpg', alt: '180Hz monitor row' },
+  ];
+
+  let current = 0;
+
+  const lightbox = document.getElementById('lightbox')!;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement;
+  const counter = document.getElementById('lightbox-counter')!;
+
+  function open(index: number) {
+    current = index;
+    update();
+    lightbox.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  function update() {
+    img.src = images[current].src;
+    img.alt = images[current].alt;
+    counter.textContent = `${current + 1} / ${images.length}`;
+  }
+
+  function prev() { current = (current - 1 + images.length) % images.length; update(); }
+  function next() { current = (current + 1) % images.length; update(); }
+
+  document.querySelectorAll<HTMLButtonElement>('.gallery-item').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      open(Number(btn.dataset.galleryIndex));
+    });
+  });
+
+  document.getElementById('lightbox-close')!.addEventListener('click', close);
+  document.getElementById('lightbox-prev')!.addEventListener('click', prev);
+  document.getElementById('lightbox-next')!.addEventListener('click', next);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+</script>

@@ -1,0 +1,99 @@
+---
+import { SITE } from '../../data/site';
+
+interface Props {
+  heading?: string;
+  sub?: string;
+  ctaLabel?: string;
+  whatsappMessage?: string;
+}
+const {
+  heading = 'Ready to play?',
+  sub = 'Walk in any time, or lock your room in under a minute on WhatsApp.',
+  ctaLabel = 'Book via WhatsApp',
+  whatsappMessage = 'Hi! I want to book a session at Arcadium. Please confirm availability.',
+} = Astro.props;
+
+const href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<section class="cta-band section-pad" aria-label="Booking call to action">
+  <div class="container">
+    <div class="cta-inner glass-card" data-reveal>
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="cta-text">
+        <h2 class="cta-heading">{heading}</h2>
+        <p class="cta-sub">{sub}</p>
+      </div>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary cta-button"
+        data-cursor="magnetic"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    overflow: hidden;
+  }
+
+  .cta-inner {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: clamp(2.5rem, 5vw, 4rem);
+    background: linear-gradient(160deg, rgba(101, 40, 247, 0.14) 0%, rgba(13, 6, 20, 0.9) 65%);
+    border-color: rgba(101, 40, 247, 0.4);
+  }
+
+  .cta-glow {
+    position: absolute;
+    top: -40%;
+    left: 20%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(101, 40, 247, 0.5) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .cta-text {
+    position: relative;
+    z-index: 1;
+    max-width: 36ch;
+  }
+
+  .cta-heading {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--color-text);
+  }
+
+  .cta-sub {
+    margin-top: 0.875rem;
+    font-size: 1rem;
+    color: rgba(242, 240, 254, 0.6);
+    line-height: 1.6;
+  }
+
+  .cta-button {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+</style>

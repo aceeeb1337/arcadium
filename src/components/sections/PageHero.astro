@@ -1,0 +1,85 @@
+---
+interface Props {
+  eyebrow: string;
+  titleLine1: string;
+  titleAccent: string;
+  sub: string;
+}
+const { eyebrow, titleLine1, titleAccent, sub } = Astro.props;
+---
+
+<section class="page-hero" aria-label={eyebrow}>
+  <div class="page-hero-glow" aria-hidden="true"></div>
+  <div class="container page-hero-inner">
+    <p class="page-hero-eyebrow" data-reveal>{eyebrow}</p>
+    <h1 class="page-hero-title" data-reveal>
+      {titleLine1}<br /><span class="gradient-text">{titleAccent}</span>
+    </h1>
+    <p class="page-hero-sub" data-reveal>{sub}</p>
+    <div class="page-hero-ctas" data-reveal>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--header-height) + clamp(5rem, 12vw, 9rem));
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+  }
+
+  .page-hero-glow {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: clamp(360px, 60vw, 760px);
+    height: clamp(360px, 60vw, 760px);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(101, 40, 247, 0.5) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.22;
+  }
+
+  .page-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .page-hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-light);
+    margin-bottom: 1.25rem;
+  }
+
+  .page-hero-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.75rem, 6.5vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    margin-bottom: 1.75rem;
+  }
+
+  .page-hero-sub {
+    font-size: clamp(1rem, 1.4vw, 1.375rem);
+    color: rgba(242, 240, 254, 0.6);
+    max-width: 56ch;
+    line-height: 1.6;
+  }
+
+  .page-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+</style>
