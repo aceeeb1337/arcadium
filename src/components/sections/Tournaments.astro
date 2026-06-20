@@ -150,14 +150,24 @@ const steps = [
     `;
   }
 
-  async function loadTournaments() {
+async function loadTournaments() {
     try {
       const res = await fetch(WORKER_URL);
       if (!res.ok) throw new Error('Worker error');
       const data = await res.json();
-      if (!Array.isArray(data) || data.length === 0) return;
       const grid = document.getElementById('tour-grid');
-      if (grid) grid.innerHTML = data.map(makeCard).join('');
+      if (!grid) return;
+      if (!Array.isArray(data) || data.length === 0) {
+        grid.innerHTML = `
+          <div class="no-tournaments">
+            <p class="no-tour-emoji">🏆</p>
+            <h3 class="no-tour-title">No tournaments right now</h3>
+            <p class="no-tour-sub">Check back soon — new brackets drop weekly.</p>
+          </div>
+        `;
+        return;
+      }
+      grid.innerHTML = data.map(makeCard).join('');
     } catch (e) {
       console.warn('Challonge Worker unavailable, showing fallback');
     }
@@ -400,6 +410,30 @@ const steps = [
     font-size: 0.875rem;
     color: var(--color-text-dim);
     margin-top: 3.5rem;
+  }
+.no-tournaments {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .no-tour-emoji { font-size: 3rem; }
+
+  .no-tour-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .no-tour-sub {
+    font-size: 1rem;
+    color: var(--color-text-dim);
   }
 
   .tour-note a { color: var(--color-brand-light); text-decoration: none; }
