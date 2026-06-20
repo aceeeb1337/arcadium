@@ -49,7 +49,7 @@ const whatsappBase = `https://wa.me/${SITE.whatsapp}?text=`;
             href={`${whatsappBase}${encodeURIComponent(cat.whatsappMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
-            class:list={['pricing-cta', cat.accent === 'purple' ? 'btn-primary' : 'btn-ghost']}
+            class={cat.accent === 'purple' ? 'btn-primary pricing-cta' : 'btn-ghost pricing-cta'}
             data-cursor="magnetic"
           >
             Book {cat.name}
