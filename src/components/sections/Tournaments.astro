@@ -36,7 +36,7 @@ const steps = [
       </p>
     </div>
 
-    <div class="tour-grid">
+    <div class="tour-grid" id="tour-grid">
       {upcoming.map((t) => (
         <article class:list={['tour-card glass-card', `acc-${t.accent}`]} data-reveal>
           <div class="tour-card-top">
@@ -104,6 +104,72 @@ const steps = [
     </p>
   </div>
 </section>
+
+
+<script>
+  const WORKER_URL = 'https://arcadium-website.fireonnoob.workers.dev';
+  const WA_BASE = `https://wa.me/923359557043?text=`;
+
+  const statusLabel: Record<string, string> = {
+    open: 'Registration open',
+    closing: 'Closing soon',
+    full: 'Slots full',
+    past: 'Completed',
+  };
+
+  function makeCard(t: any): string {
+    const btnClass = t.status === 'full' ? 'btn-ghost tour-cta' : 'btn-primary tour-cta';
+    const btnLabel = t.status === 'full' ? 'Join waitlist' : 'Register';
+    const href = `${WA_BASE}${encodeURIComponent(t.whatsappMessage)}`;
+    return `
+      <article class="tour-card glass-card acc-${t.accent}">
+        <div class="tour-card-top">
+          <span class="tour-platform">${t.platform}</span>
+          <span class="tour-status st-${t.status}">
+            <span class="status-dot" aria-hidden="true"></span>
+            ${statusLabel[t.status] ?? t.status}
+          </span>
+        </div>
+        <div class="tour-titles">
+          <p class="tour-game">${t.game}</p>
+          <h3 class="tour-name">${t.title}</h3>
+        </div>
+        <div class="tour-prize">
+          <span class="prize-label">Prize pool</span>
+          <span class="prize-value">${t.prizePool}</span>
+        </div>
+        <dl class="tour-meta">
+          <div class="meta-row"><dt>Date</dt><dd>${t.date} · ${t.time}</dd></div>
+          <div class="meta-row"><dt>Format</dt><dd>${t.format}</dd></div>
+          <div class="meta-row"><dt>Teams</dt><dd>${t.teamSize}</dd></div>
+          <div class="meta-row"><dt>Entry</dt><dd>${t.entryFee}</dd></div>
+          <div class="meta-row"><dt>Slots</dt><dd>${t.slots}</dd></div>
+        </dl>
+        <a href="${href}" target="_blank" rel="noopener noreferrer" class="${btnClass}">${btnLabel}</a>
+      </article>
+    `;
+  }
+
+  async function loadTournaments() {
+    try {
+      const res = await fetch(WORKER_URL);
+      if (!res.ok) throw new Error('Worker error');
+      const data = await res.json();
+      if (!Array.isArray(data) || data.length === 0) return;
+      const grid = document.getElementById('tour-grid');
+      if (grid) grid.innerHTML = data.map(makeCard).join('');
+    } catch (e) {
+      console.warn('Challonge Worker unavailable, showing fallback');
+    }
+  }
+
+  loadTournaments();
+</script>
+
+
+
+
+
 
 <style>
   #tournaments { position: relative; overflow: hidden; }
