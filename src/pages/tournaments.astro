@@ -1,11 +1,11 @@
-ï»¿---
+---
 import MainLayout from '../layouts/MainLayout.astro';
 import SectionLabel from '../components/ui/SectionLabel.astro';
 
 const WORKER = 'https://arcadium-website.fireonnoob.workers.dev';
 ---
 
-<MainLayout title="Tournaments â€” Arcadium" description="Join weekly esports tournaments at Arcadium Karachi. CS2, Valorant, Tekken 8, EA FC 25 and Dota 2.">
+<MainLayout title="Tournaments — Arcadium" description="Join weekly esports tournaments at Arcadium Karachi. CS2, Valorant, Tekken 8, EA FC 25 and Dota 2.">
   <section class="tour-page section-pad">
     <div class="container">
       <div class="page-hero" data-reveal>
@@ -96,14 +96,14 @@ const WORKER = 'https://arcadium-website.fireonnoob.workers.dev';
           <span class="prize-value">${t.prize_pool || 'TBA'}</span>
         </div>
         <dl class="tour-meta">
-          <div class="meta-row"><dt>Date</dt><dd>${date}${time ? ' Â· ' + time : ''}</dd></div>
+          <div class="meta-row"><dt>Date</dt><dd>${date}${time ? ' · ' + time : ''}</dd></div>
           <div class="meta-row"><dt>Format</dt><dd>${t.format || 'TBA'}</dd></div>
           <div class="meta-row"><dt>Entry</dt><dd>${t.entry_fee || 'TBA'}</dd></div>
           <div class="meta-row"><dt>Slots</dt><dd>${t.slots ? t.slots + ' slots' : 'TBA'}</dd></div>
         </dl>
         <div class="tour-actions">
-          <a href="/tournaments/?slug=${t.slug}" class="btn-ghost tour-btn">View Details</a>
-          ${canRegister ? `<a href="/tournaments/?slug=${t.slug}#register" class="btn-primary tour-btn">Register</a>` : ''}
+          <a href="/tournament/?slug=${t.slug}" class="btn-ghost tour-btn">View Details</a>
+          ${canRegister ? `<a href="/tournament/?slug=${t.slug}#register" class="btn-primary tour-btn">Register</a>` : ''}
         </div>
       </article>
     `;
@@ -125,7 +125,7 @@ const WORKER = 'https://arcadium-website.fireonnoob.workers.dev';
 
       upGrid.innerHTML = upcoming.length
         ? upcoming.map(t => card(t, false)).join('')
-        : '<div class="empty-state"><p class="empty-title">No upcoming tournaments</p><p class="empty-sub">Check back soon â€” new brackets drop weekly.</p></div>';
+        : '<div class="empty-state"><p class="empty-title">No upcoming tournaments</p><p class="empty-sub">Check back soon — new brackets drop weekly.</p></div>';
 
       pastGrid.innerHTML = past.length
         ? past.map(t => card(t, true)).join('')
