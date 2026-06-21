@@ -1,209 +1,155 @@
 ---
-import SectionLabel from '../ui/SectionLabel.astro';
-import { tournaments } from '../../data/tournaments';
-import { SITE } from '../../data/site';
-import { Icon } from 'astro-icon/components';
+import MainLayout from '../layouts/MainLayout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
 
-const whatsappBase = `https://wa.me/${SITE.whatsapp}?text=`;
-const upcoming = tournaments.filter((t) => t.status !== 'past');
+const WORKER = 'https://arcadium-website.fireonnoob.workers.dev';
 
 const statusLabel: Record<string, string> = {
-  open: 'Registration open',
-  closing: 'Closing soon',
-  full: 'Slots full',
-  past: 'Completed',
+  upcoming: 'Coming Soon',
+  registration_open: 'Registration Open',
+  ongoing: 'Ongoing',
+  completed: 'Completed',
 };
 
-const steps = [
-  { icon: 'ph:chat-circle-text-bold', title: 'Message us', text: 'Tap register on any tournament. It opens WhatsApp with your slot request ready to send.' },
-  { icon: 'ph:credit-card-bold', title: 'Confirm entry', text: 'Pay the entry fee in cash at the cafe or via EasyPaisa / JazzCash to lock your seat.' },
-  { icon: 'ph:trophy-bold', title: 'Show up & compete', text: 'Arrive 30 minutes before start, get your station, and play for the prize pool.' },
-];
+const statusColor: Record<string, string> = {
+  upcoming: 'st-upcoming',
+  registration_open: 'st-open',
+  ongoing: 'st-ongoing',
+  completed: 'st-done',
+};
+
+const gameAccent: Record<string, string> = {
+  'CS2': 'acc-blue',
+  'Valorant': 'acc-pink',
+  'Dota 2': 'acc-purple',
+  'Tekken 8': 'acc-pink',
+  'EA FC 25': 'acc-blue',
+};
+
+const gamePlatform: Record<string, string> = {
+  'CS2': 'PC',
+  'Valorant': 'PC',
+  'Dota 2': 'PC',
+  'Tekken 8': 'PS5',
+  'EA FC 25': 'PS5',
+};
 ---
 
-<section id="tournaments" class="section-pad" aria-label="Tournaments">
-  <div class="container">
-    <div class="tour-glow" aria-hidden="true"></div>
-
-    <div class="tour-header" data-reveal>
-      <SectionLabel label="Upcoming" />
-      <h2 class="section-heading">
-        Compete.<br /><span class="gradient-text">Win. Repeat.</span>
-      </h2>
-      <p class="tour-sub">
-        Weekly brackets across PC and PS5. Cash prize pools, proper double-elim formats,
-        and a room full of Karachi's best.
-      </p>
-    </div>
-
-    <div class="tour-grid" id="tour-grid">
-      {upcoming.map((t) => (
-        <article class:list={['tour-card glass-card', `acc-${t.accent}`]} data-reveal>
-          <div class="tour-card-top">
-            <span class="tour-platform">{t.platform}</span>
-            <span class:list={['tour-status', `st-${t.status}`]}>
-              <span class="status-dot" aria-hidden="true"></span>
-              {statusLabel[t.status]}
-            </span>
-          </div>
-
-          <div class="tour-titles">
-            <p class="tour-game">{t.game}</p>
-            <h3 class="tour-name">{t.title}</h3>
-          </div>
-
-          <div class="tour-prize">
-            <span class="prize-label">Prize pool</span>
-            <span class="prize-value">{t.prizePool}</span>
-          </div>
-
-          <dl class="tour-meta">
-            <div class="meta-row"><dt>Date</dt><dd>{t.date} &middot; {t.time}</dd></div>
-            <div class="meta-row"><dt>Format</dt><dd>{t.format}</dd></div>
-            <div class="meta-row"><dt>Teams</dt><dd>{t.teamSize}</dd></div>
-            <div class="meta-row"><dt>Entry</dt><dd>{t.entryFee}</dd></div>
-            <div class="meta-row"><dt>Slots</dt><dd>{t.slots}</dd></div>
-          </dl>
-
-          <a
-            href={`${whatsappBase}${encodeURIComponent(t.whatsappMessage)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class:list={['tour-cta', t.status === 'full' ? 'btn-ghost' : 'btn-primary']}
-            data-cursor="magnetic"
-          >
-            {t.status === 'full' ? 'Join waitlist' : 'Register'}
-          </a>
-        </article>
-      ))}
-    </div>
-
-    <!-- How to enter -->
-    <div class="enter-block">
-      <div class="enter-head" data-reveal>
-        <SectionLabel label="How to enter" />
-        <h2 class="section-heading">Three steps<br /><span class="gradient-text">to the bracket</span></h2>
+<MainLayout title="Tournaments — Arcadium" description="Join weekly esports tournaments at Arcadium Karachi. CS2, Valorant, Tekken 8, EA FC 25 and Dota 2.">
+  <section class="tour-page section-pad">
+    <div class="container">
+      <div class="page-hero" data-reveal>
+        <SectionLabel label="Compete" />
+        <h1 class="section-heading">
+          Tournaments<br /><span class="gradient-text">at Arcadium</span>
+        </h1>
+        <p class="page-sub">
+          Weekly brackets across PC and PS5. Cash prize pools, proper formats, and Karachi's most competitive players.
+        </p>
       </div>
-      <div class="steps-grid" data-reveal>
-        {steps.map((s, i) => (
-          <div class="step-card glass-card">
-            <span class="step-num">0{i + 1}</span>
-            <div class="step-icon" aria-hidden="true">
-              <Icon name={s.icon} width={28} height={28} />
-            </div>
-            <h3 class="step-title">{s.title}</h3>
-            <p class="step-text">{s.text}</p>
-          </div>
-        ))}
+
+      <!-- Upcoming -->
+      <div class="tour-section">
+        <h2 class="tour-section-title" data-reveal>Upcoming Tournaments</h2>
+        <div class="tour-grid" id="upcoming-grid">
+          <div class="loading-state">Loading tournaments...</div>
+        </div>
+      </div>
+
+      <!-- Past -->
+      <div class="tour-section">
+        <h2 class="tour-section-title" data-reveal>Past Tournaments</h2>
+        <div class="tour-grid past-grid" id="past-grid">
+          <div class="loading-state">Loading...</div>
+        </div>
       </div>
     </div>
+  </section>
+</MainLayout>
 
-    <p class="tour-note" data-reveal>
-      Want to host or sponsor a tournament? Reach us on WhatsApp at
-      <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer">{SITE.phone}</a>
-    </p>
-  </div>
-</section>
+<script define:vars={{ WORKER, statusLabel, statusColor, gameAccent, gamePlatform }}>
+  function card(t, isPast) {
+    const accent = gameAccent[t.game] || 'acc-purple';
+    const stClass = statusColor[t.status] || 'st-open';
+    const label = statusLabel[t.status] || t.status;
+    const platform = gamePlatform[t.game] || 'PC';
+    const date = t.start_date ? new Date(t.start_date).toLocaleDateString('en-PK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : 'TBA';
+    const time = t.start_date ? new Date(t.start_date).toLocaleTimeString('en-PK', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
+    const canRegister = t.status === 'registration_open' && !isPast;
 
-
-<script>
-  const WORKER_URL = 'https://arcadium-website.fireonnoob.workers.dev';
-  const WA_BASE = `https://wa.me/923359557043?text=`;
-
-  const statusLabel: Record<string, string> = {
-    open: 'Registration open',
-    closing: 'Closing soon',
-    full: 'Slots full',
-    past: 'Completed',
-  };
-
-  function makeCard(t: any): string {
-    const btnClass = t.status === 'full' ? 'btn-ghost tour-cta' : 'btn-primary tour-cta';
-    const btnLabel = t.status === 'full' ? 'Join waitlist' : 'Register';
-    const href = `${WA_BASE}${encodeURIComponent(t.whatsappMessage)}`;
     return `
-      <article class="tour-card glass-card acc-${t.accent}">
+      <article class="tour-card glass-card ${accent}${isPast ? ' is-past' : ''}">
         <div class="tour-card-top">
-          <span class="tour-platform">${t.platform}</span>
-          <span class="tour-status st-${t.status}">
-            <span class="status-dot" aria-hidden="true"></span>
-            ${statusLabel[t.status] ?? t.status}
+          <span class="tour-platform">${platform}</span>
+          <span class="tour-status ${stClass}">
+            <span class="status-dot"></span>${label}
           </span>
         </div>
         <div class="tour-titles">
           <p class="tour-game">${t.game}</p>
-          <h3 class="tour-name">${t.title}</h3>
+          <h3 class="tour-name">${t.name}</h3>
         </div>
         <div class="tour-prize">
           <span class="prize-label">Prize pool</span>
-          <span class="prize-value">${t.prizePool}</span>
+          <span class="prize-value">${t.prize_pool || 'TBA'}</span>
         </div>
         <dl class="tour-meta">
-          <div class="meta-row"><dt>Date</dt><dd>${t.date} · ${t.time}</dd></div>
-          <div class="meta-row"><dt>Format</dt><dd>${t.format}</dd></div>
-          <div class="meta-row"><dt>Teams</dt><dd>${t.teamSize}</dd></div>
-          <div class="meta-row"><dt>Entry</dt><dd>${t.entryFee}</dd></div>
-          <div class="meta-row"><dt>Slots</dt><dd>${t.slots}</dd></div>
+          <div class="meta-row"><dt>Date</dt><dd>${date}${time ? ' · ' + time : ''}</dd></div>
+          <div class="meta-row"><dt>Format</dt><dd>${t.format || 'TBA'}</dd></div>
+          <div class="meta-row"><dt>Entry</dt><dd>${t.entry_fee || 'TBA'}</dd></div>
+          <div class="meta-row"><dt>Slots</dt><dd>${t.slots ? t.slots + ' slots' : 'TBA'}</dd></div>
         </dl>
-        <a href="${href}" target="_blank" rel="noopener noreferrer" class="${btnClass}">${btnLabel}</a>
+        <div class="tour-actions">
+          <a href="/tournaments/${t.slug}" class="btn-ghost tour-btn">View Details</a>
+          ${canRegister ? `<a href="/tournaments/${t.slug}#register" class="btn-primary tour-btn">Register</a>` : ''}
+        </div>
       </article>
     `;
   }
 
-async function loadTournaments() {
+  async function load() {
     try {
-      const res = await fetch(WORKER_URL);
-      if (!res.ok) throw new Error('Worker error');
-      const data = await res.json();
-      const grid = document.getElementById('tour-grid');
-      if (!grid) return;
-      if (!Array.isArray(data) || data.length === 0) {
-        grid.innerHTML = `
-          <div class="no-tournaments">
-            <p class="no-tour-emoji">🏆</p>
-            <h3 class="no-tour-title">No tournaments right now</h3>
-            <p class="no-tour-sub">Check back soon — new brackets drop weekly.</p>
-          </div>
-        `;
-        return;
+      const res = await fetch(`${WORKER}/tournaments`);
+      const all = await res.json();
+
+      const upcoming = all.filter(t => t.status !== 'completed');
+      const past = all.filter(t => t.status === 'completed');
+
+      const upGrid = document.getElementById('upcoming-grid');
+      const pastGrid = document.getElementById('past-grid');
+
+      if (upGrid) {
+        upGrid.innerHTML = upcoming.length
+          ? upcoming.map(t => card(t, false)).join('')
+          : '<div class="empty-state"><p class="empty-title">No upcoming tournaments</p><p class="empty-sub">Check back soon — new brackets drop weekly.</p></div>';
       }
-      grid.innerHTML = data.map(makeCard).join('');
+
+      if (pastGrid) {
+        pastGrid.innerHTML = past.length
+          ? past.map(t => card(t, true)).join('')
+          : '<div class="empty-state"><p class="empty-sub">No past tournaments yet.</p></div>';
+      }
     } catch (e) {
-      console.warn('Challonge Worker unavailable, showing fallback');
+      document.getElementById('upcoming-grid').innerHTML = '<div class="empty-state"><p class="empty-sub">Failed to load tournaments. Please refresh.</p></div>';
     }
   }
 
-  loadTournaments();
+  load();
 </script>
 
-
-
-
-
-
 <style>
-  #tournaments { position: relative; overflow: hidden; }
+  .page-hero { max-width: 680px; margin-bottom: 5rem; }
+  .page-sub { font-size: 1.0625rem; color: var(--color-text-dim); margin-top: 1rem; max-width: 52ch; }
 
-  .tour-glow {
-    position: absolute;
-    top: 10%;
-    left: -10%;
-    width: clamp(300px, 55vw, 680px);
-    height: clamp(300px, 55vw, 680px);
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(101, 40, 247, 0.45) 0%, transparent 70%);
-    filter: blur(80px);
-    opacity: 0.2;
-    pointer-events: none;
-  }
-
-  .tour-header { max-width: 640px; margin-bottom: 4rem; }
-
-  .tour-sub {
-    font-size: 1.0625rem;
-    color: var(--color-text-dim);
-    max-width: 52ch;
-    margin-top: 1rem;
+  .tour-section { margin-bottom: 5rem; }
+  .tour-section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .tour-grid {
@@ -211,231 +157,64 @@ async function loadTournaments() {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-
-  @media (min-width: 700px) {
-    .tour-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (min-width: 1100px) {
-    .tour-grid { grid-template-columns: repeat(4, 1fr); }
-  }
+  @media (min-width: 700px) { .tour-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .tour-grid { grid-template-columns: repeat(3, 1fr); } }
 
   .tour-card {
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    position: relative;
-    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease-expo-out);
+    transition: transform 0.3s var(--ease-expo-out), box-shadow 0.3s;
   }
+  .tour-card:hover { transform: translateY(-4px); box-shadow: 0 8px 40px rgba(101,40,247,0.2); }
+  .is-past { opacity: 0.6; }
+  .is-past:hover { opacity: 1; }
 
-  .tour-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 40px rgba(101, 40, 247, 0.25);
-  }
+  .acc-purple { border-color: rgba(101,40,247,0.4) !important; }
+  .acc-blue   { border-color: rgba(56,139,253,0.3) !important; }
+  .acc-pink   { border-color: rgba(220,50,120,0.35) !important; }
 
-  .acc-purple { border-color: rgba(101, 40, 247, 0.4) !important; }
-  .acc-blue   { border-color: rgba(56, 139, 253, 0.3) !important; }
-  .acc-pink   { border-color: rgba(220, 50, 120, 0.35) !important; }
-
-  .tour-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-
+  .tour-card-top { display: flex; align-items: center; justify-content: space-between; }
   .tour-platform {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em;
     color: var(--color-brand-light);
-    background: rgba(101, 40, 247, 0.12);
-    border: 1px solid rgba(101, 40, 247, 0.25);
-    border-radius: 6px;
-    padding: 0.2rem 0.55rem;
+    background: rgba(101,40,247,0.12); border: 1px solid rgba(101,40,247,0.25);
+    border-radius: 6px; padding: 0.2rem 0.55rem;
   }
-
-  .tour-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-  }
-
-  .st-open    { color: #4ade80; }
-  .st-open .status-dot    { background: #4ade80; box-shadow: 0 0 8px rgba(74, 222, 128, 0.8); }
-  .st-closing { color: #fbbf24; }
-  .st-closing .status-dot { background: #fbbf24; box-shadow: 0 0 8px rgba(251, 191, 36, 0.8); }
-  .st-full    { color: var(--color-text-dim); }
-  .st-full .status-dot    { background: var(--color-text-dim); }
+  .tour-status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.6875rem; font-weight: 600; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .st-open    { color: #4ade80; } .st-open .status-dot    { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.8); }
+  .st-ongoing { color: #f59e0b; } .st-ongoing .status-dot { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.8); }
+  .st-upcoming{ color: #818cf8; } .st-upcoming .status-dot{ background: #818cf8; }
+  .st-done    { color: var(--color-text-dim); } .st-done .status-dot { background: var(--color-text-dim); }
 
   .tour-titles { display: flex; flex-direction: column; gap: 0.2rem; }
-
-  .tour-game {
-    font-size: 0.8125rem;
-    color: var(--color-text-dim);
-    letter-spacing: 0.01em;
-  }
-
-  .tour-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.375rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--color-text);
-    line-height: 1.1;
-  }
+  .tour-game { font-size: 0.8125rem; color: var(--color-text-dim); }
+  .tour-name { font-family: 'Inter', sans-serif; font-size: 1.375rem; font-weight: 700; letter-spacing: -0.02em; color: var(--color-text); line-height: 1.1; }
 
   .tour-prize {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 0.875rem 1rem;
-    border-radius: 12px;
-    background: rgba(101, 40, 247, 0.1);
-    border: 1px solid rgba(101, 40, 247, 0.25);
+    display: flex; flex-direction: column; gap: 0.15rem;
+    padding: 0.875rem 1rem; border-radius: 12px;
+    background: rgba(101,40,247,0.1); border: 1px solid rgba(101,40,247,0.25);
   }
+  .prize-label { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-dim); }
+  .prize-value { font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
 
-  .prize-label {
-    font-size: 0.625rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-  }
-
-  .prize-value {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #fff;
-  }
-
-  .tour-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin: 0;
-    flex: 1;
-  }
-
-  .meta-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    font-size: 0.8125rem;
-  }
-
+  .tour-meta { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; flex: 1; }
+  .meta-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; font-size: 0.8125rem; }
   .meta-row dt { color: var(--color-text-dim); flex-shrink: 0; }
-  .meta-row dd {
-    margin: 0;
-    color: rgba(242, 240, 254, 0.82);
-    text-align: right;
-    font-weight: 500;
+  .meta-row dd { margin: 0; color: rgba(242,240,254,0.82); text-align: right; font-weight: 500; }
+
+  .tour-actions { display: flex; gap: 0.75rem; margin-top: auto; }
+  .tour-btn { flex: 1; justify-content: center; text-align: center; padding: 0.75rem 1rem; font-size: 0.875rem; }
+
+  .loading-state { color: var(--color-text-dim); padding: 3rem; text-align: center; }
+
+  .empty-state {
+    grid-column: 1/-1; text-align: center; padding: 4rem 2rem;
+    display: flex; flex-direction: column; gap: 0.5rem; align-items: center;
   }
-
-  .tour-cta { width: 100%; justify-content: center; text-align: center; margin-top: auto; }
-
-  /* How to enter */
-  .enter-block { margin-top: clamp(4.5rem, 9vw, 8rem); }
-  .enter-head { max-width: 600px; margin-bottom: 3rem; }
-
-  .steps-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .steps-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .step-card {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: relative;
-  }
-
-  .step-num {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: rgba(101, 40, 247, 0.25);
-  }
-
-  .step-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: rgba(101, 40, 247, 0.12);
-    border: 1px solid rgba(101, 40, 247, 0.25);
-    color: var(--color-brand-light);
-  }
-
-  .step-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1875rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-
-  .step-text {
-    font-size: 0.9rem;
-    color: rgba(242, 240, 254, 0.6);
-    line-height: 1.65;
-  }
-
-  .tour-note {
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--color-text-dim);
-    margin-top: 3.5rem;
-  }
-.no-tournaments {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .no-tour-emoji { font-size: 3rem; }
-
-  .no-tour-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .no-tour-sub {
-    font-size: 1rem;
-    color: var(--color-text-dim);
-  }
-
-  .tour-note a { color: var(--color-brand-light); text-decoration: none; }
-  .tour-note a:hover { color: #fff; }
+  .empty-title { font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--color-text); }
+  .empty-sub { color: var(--color-text-dim); font-size: 0.9375rem; }
 </style>
