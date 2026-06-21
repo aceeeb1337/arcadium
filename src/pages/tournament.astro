@@ -43,7 +43,7 @@ const teamGames = ['CS2', 'Valorant', 'Dota 2'];
 </MainLayout>
 
 <script define:vars={{ WORKER, teamGames }}>
-  // Read slug from query param: /tournaments/?slug=my-tournament
+  // Read slug from query param: /tournament/?slug=my-tournament
   const slug = new URLSearchParams(window.location.search).get('slug');
 
   const statusLabel = {
